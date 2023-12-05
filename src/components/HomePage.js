@@ -11,8 +11,8 @@ export default function HomePage() {
         <div>PIZZA, DOYURUR</div>
         </div>
 
-      <Link to="/order">
-      <button className="button-homepage">ACIKTIM</button>
+      <Link to="/order" className="button-homepage">
+      ACIKTIM
       </Link>     
 
        <div>
