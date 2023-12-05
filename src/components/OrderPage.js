@@ -1,70 +1,94 @@
-import { getByPlaceholderText } from "@testing-library/react";
 import React from "react";
-import {useState, useEffect} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 export default function OrderPage() {
-
-  const toppings = ['Pepperoni', 'Sarımsak', 'Soğan', 'Kabak', 'Jalepeno', 'Tavuk Izgara', 'Ananas', 'Sucuk', 'Kanada Jambonu', 'Sucuk', 'Mısır', 'Sosis', 'Biber', 'Domates']
-  const [pizzaPrice, setPizzaPrice] = useState(85.50);
+  const toppings = [
+    "Pepperoni",
+    "tavuk Izgara",
+    "Mısır",
+    "Sarımsak",
+    "Ananas",
+    "Sosis",
+    "Soğan",
+    "Zeytin",
+    "Biber",
+    "Kabak",
+    "Kanada Jambon",
+    "Domates",
+    "Jalepeno",
+    "Sucuk",
+  ];
+  const [pizzaPrice, setPizzaPrice] = useState(85.5);
   const [pizzaQuantity, setPizzaQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState(null); 
-  const [doughSelection, setDoughSelection] = useState("hamur seçiniz")
-  const [toppingSelection, setToppingSelection] = useState([]);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [doughSelection, setDoughSelection] = useState("hamur seçiniz");
+  const [selectedToppings, setSelectedToppings] = useState([]);
+  const [totalToppingCost, setTotalToppingCost] = useState(0);
 
+    const handleCheckboxChange = (topping) => {
+      const isSelected = selectedToppings.includes(topping);
+    
+      if (isSelected) {
+        setSelectedToppings(selectedToppings.filter((item) => item !== topping));
+      } else {
+        setSelectedToppings([...selectedToppings, topping]);
+      }
+    
+      setTotalToppingCost(selectedToppings.length * 5);
+      if (!isSelected) {
+        setTotalToppingCost((prevTotalToppingCost) => prevTotalToppingCost + 5);
+      }
+    };
 
-  const decreaseQuantity=(e)=>{
-   e.preventDefault();
-   pizzaQuantity > 1 ? setPizzaQuantity(pizzaQuantity-1) : setPizzaQuantity(pizzaQuantity);
-  }
+  const decreaseQuantity = (e) => {
+    e.preventDefault();
+    pizzaQuantity > 1
+      ? setPizzaQuantity(pizzaQuantity - 1)
+      : setPizzaQuantity(pizzaQuantity);
+  };
 
-  const increaseQuantity =(e)=>{
-  e.preventDefault();
-  setPizzaQuantity(pizzaQuantity+1);
-  }
+  const increaseQuantity = (e) => {
+    e.preventDefault();
+    setPizzaQuantity(pizzaQuantity + 1);
+  };
 
-   const handleSizeChange = (e)=>{
+  const handleSizeChange = (e) => {
     setSelectedSize(e.target.value);
-   }
+  };
 
-   const handleThicknessChange = (e) =>{
-    setDoughSelection(e.target.value)
-   }
+  const handleThicknessChange = (e) => {
+    setDoughSelection(e.target.value);
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
+    setPizzaPrice(pizzaQuantity * 85.5);
+  }, [pizzaQuantity]);
 
-    setPizzaPrice(pizzaQuantity * 85.50)
-
-  },[pizzaQuantity])
-
-  if(selectedSize === "small"){
-  useEffect(()=>{
-      console.log("pizza boyutu küçük")
-    },[selectedSize])
-  }else if(selectedSize === "medium"){
-    useEffect(()=>{
-      console.log("pizza boyutu orta")
-    },[selectedSize])
-  }else{
-    useEffect(()=>{
-      console.log("pizza boyutu büyük")
-    },[selectedSize])
-  }
-
-  if(doughSelection === "thin"){
-    useEffect(()=>{
-        console.log("ince seçim")
-      },[doughSelection])
-    }else if(doughSelection === "standart"){
-      useEffect(()=>{
-        console.log("standart seçim")
-      },[doughSelection])
-    }else{
-      useEffect(()=>{
-        console.log("kalın seçim")
-      },[doughSelection])
+  useEffect(() => {
+    if (selectedSize === "small") {
+      console.log("pizza boyutu küçük");
+    } else if (selectedSize === "medium") {
+      console.log("pizza boyutu orta");
+    } else {
+      console.log("pizza boyutu büyük");
     }
-  
+  }, [selectedSize]);
+
+  useEffect(() => {
+    if (doughSelection === "thin") {
+      console.log("ince seçim");
+    } else if (doughSelection === "standart") {
+      console.log("standart seçim");
+    } else {
+      console.log("kalın seçim");
+    }
+  }, [doughSelection]);
+
+  useEffect(() => {
+    console.log(selectedToppings);
+  }, [selectedToppings]);
+
   return (
     <div>
       <div className="orderPageHeader">
@@ -105,29 +129,32 @@ export default function OrderPage() {
 
                 <div className="radio-size-selection">
                   <label>
-                    <input type="radio"
-                           name="size"
-                           value="small"
-                           checked={selectedSize === "small"}
-                           onChange={handleSizeChange}
+                    <input
+                      type="radio"
+                      name="size"
+                      value="small"
+                      checked={selectedSize === "small"}
+                      onChange={handleSizeChange}
                     ></input>
                     Küçük
                   </label>
                   <label>
-                    <input type="radio"
-                           name="size"
-                           value="medium"
-                           checked={selectedSize === "medium"}
-                           onChange={handleSizeChange}
+                    <input
+                      type="radio"
+                      name="size"
+                      value="medium"
+                      checked={selectedSize === "medium"}
+                      onChange={handleSizeChange}
                     ></input>
                     Orta
                   </label>
                   <label>
-                    <input type="radio"
-                           name="size"
-                           value="big"
-                           checked={selectedSize === "big"}
-                           onChange={handleSizeChange}
+                    <input
+                      type="radio"
+                      name="size"
+                      value="big"
+                      checked={selectedSize === "big"}
+                      onChange={handleSizeChange}
                     ></input>
                     Büyük
                   </label>
@@ -138,9 +165,11 @@ export default function OrderPage() {
                   Hamur Seç <span style={{ color: "red" }}>*</span>
                 </h3>
                 <label>
-                  <select name="thickness"
-                          value={selectedSize}
-                          onChange={handleThicknessChange}>
+                  <select
+                    name="thickness"
+                    value={selectedSize}
+                    onChange={handleThicknessChange}
+                  >
                     <option>Hamur seçiniz</option>
                     <option value="thin">İnce</option>
                     <option value="standart">Standart</option>
@@ -154,64 +183,20 @@ export default function OrderPage() {
               <p>En fazla 10 malzeme seçebilirsiniz.</p>
             </div>
             <div className="extra-checkbox-selection">
-              
-              <label>
-                <input type="checkbox"
-                       Name="topping" /> Pepperoni{" "}
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Tavuk Izgara
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Mısır
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Sarımsak{" "}
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Ananas
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Sosis
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Soğan
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Sucuk
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Biber{" "}
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Kabak
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Kanada Jambonu
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Domates{" "}
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Jalepeno
-              </label>
-              <label>
-                <input type="checkbox"
-                Name="topping" /> Sucuk
-              </label>
+              {toppings.map((topping, index) => (
+                <label key={index}>
+                  <input
+                    type="checkbox"
+                    name="topping"
+                    value={topping}
+                    checked={selectedToppings.includes(topping)}
+                    onChange={() => handleCheckboxChange(topping)}
+                  />
+                  {topping}
+                </label>
+              ))}
             </div>
+
             <div>
               <h3>Sipariş Notu</h3>
               <label>
@@ -231,16 +216,16 @@ export default function OrderPage() {
                 <span>{pizzaQuantity}</span>
                 <button onClick={increaseQuantity}>+</button>
               </div>
-              
+
               <div className="totalPrice">
                 <h3>Sipariş Toplamı</h3>
 
                 <div className="price-area">
                   <div>
-                    Seçimler <span>25.50Tl</span>
+                    Seçimler <span>{totalToppingCost}</span>
                   </div>
                   <div>
-                    Toplam <span>{pizzaPrice}Tl</span>
+                    Toplam <span>{pizzaPrice+totalToppingCost}Tl</span>
                   </div>
                 </div>
 
