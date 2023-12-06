@@ -25,22 +25,35 @@ export default function OrderPage() {
   const [doughSelection, setDoughSelection] = useState("hamur seçiniz");
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [totalToppingCost, setTotalToppingCost] = useState(0);
+  const [textNote, setTextNote] = useState("");
+  const [formData, setFormData] = useState({
+    size: "",
+    doughType: "",
+    toppings: [],
+    note: "",
+    totalCost: "",
+  });
+  const handleCheckboxChange = (topping) => {
+    const isSelected = selectedToppings.includes(topping);
 
-    const handleCheckboxChange = (topping) => {
-      const isSelected = selectedToppings.includes(topping);
-    
-      if (isSelected) {
-        setSelectedToppings(selectedToppings.filter((item) => item !== topping));
-      } else {
-        setSelectedToppings([...selectedToppings, topping]);
-      }
-    
-      setTotalToppingCost(selectedToppings.length * 5);
-      if (!isSelected) {
-        setTotalToppingCost((prevTotalToppingCost) => prevTotalToppingCost + 5);
-      }
-    };
+    if (isSelected) {
+      setSelectedToppings(selectedToppings.filter((item) => item !== topping));
+    } else {
+      selectedToppings.length < 10
+        ? setSelectedToppings([...selectedToppings, topping])
+        : setSelectedToppings(selectedToppings);
+    }
 
+    setTotalToppingCost(selectedToppings.length * 5);
+    if (!isSelected) {
+      setTotalToppingCost((prevTotalToppingCost) => prevTotalToppingCost + 5);
+    }
+  };
+
+  const handleTextChange = (e) => {
+    e.preventDefault();
+    setTextNote(e.target.value);
+  };
   const decreaseQuantity = (e) => {
     e.preventDefault();
     pizzaQuantity > 1
@@ -66,6 +79,10 @@ export default function OrderPage() {
   }, [pizzaQuantity]);
 
   useEffect(() => {
+    console.log(textNote);
+  }, [textNote]);
+
+  useEffect(() => {
     if (selectedSize === "small") {
       console.log("pizza boyutu küçük");
     } else if (selectedSize === "medium") {
@@ -88,6 +105,18 @@ export default function OrderPage() {
   useEffect(() => {
     console.log(selectedToppings);
   }, [selectedToppings]);
+
+  const handleFormChange = (e) => {
+    e.preventDefault();
+    setFormData({
+      size: selectedSize,
+      doughType: doughSelection,
+      toppings: selectedToppings,
+      note: textNote,
+      totalCost: pizzaPrice + totalToppingCost,
+    });
+    console.log(formData);
+  };
 
   return (
     <div>
@@ -167,7 +196,7 @@ export default function OrderPage() {
                 <label>
                   <select
                     name="thickness"
-                    value={selectedSize}
+                    value={doughSelection}
                     onChange={handleThicknessChange}
                   >
                     <option>Hamur seçiniz</option>
@@ -204,6 +233,7 @@ export default function OrderPage() {
                   type="text"
                   placeholder="Siparişinize eklemek istediğiniz bir not var mı?"
                   className="order-note"
+                  onChange={handleTextChange}
                 ></input>
               </label>
             </div>
@@ -225,11 +255,11 @@ export default function OrderPage() {
                     Seçimler <span>{totalToppingCost}</span>
                   </div>
                   <div>
-                    Toplam <span>{pizzaPrice+totalToppingCost}Tl</span>
+                    Toplam <span>{pizzaPrice + totalToppingCost}Tl</span>
                   </div>
                 </div>
 
-                <button>SİPARİŞ VER</button>
+                <button onClick={handleFormChange}>SİPARİŞ VER</button>
               </div>
             </div>
           </form>
