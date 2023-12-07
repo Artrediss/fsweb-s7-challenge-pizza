@@ -35,7 +35,7 @@ export default function OrderPage() {
     toppings: selectedToppings,
     note: textNote,
     quantity: pizzaQuantity,
-    totalCost:((85.5 + totalToppingCost) * pizzaQuantity),
+    totalCost: (85.5 + totalToppingCost) * pizzaQuantity,
   });
 
   const handleCheckboxChange = (topping) => {
@@ -115,40 +115,42 @@ export default function OrderPage() {
     console.log(selectedToppings);
   }, [selectedToppings]);
 
-  
   useEffect(() => {
     console.log(formData);
   }, [formData]);
- 
-  const handleFormChange = () => {
-    setFormData({
-      "size": selectedSize,
-      "doughType": doughSelection,
-      "toppings": selectedToppings,
-      "note": textNote,
-      "quantity": pizzaQuantity,
-      "totalCost": parseFloat((85.5 + totalToppingCost) * pizzaQuantity),
-    });
-    postFormData();
-  };
 
-  const postFormData = async () => {
-
-    const url = "https://reqres.in/api/users";
+  const handleFormChange = async () => {
     try {
+      const updatedFormData = {
+        size: selectedSize,
+        doughType: doughSelection,
+        toppings: selectedToppings,
+        note: textNote,
+        Quantity: pizzaQuantity,
+        totalCost: (85.5 + totalToppingCost) * pizzaQuantity,
+      };
+
+      setFormData(updatedFormData);
+
       const response = await axios.post(
-        url,
-        formData
+        "https://reqres.in/api/users",
+        updatedFormData
       );
+
       console.log("Response from the server:", response.data);
     } catch (error) {
       console.error("Error while posting data:", error);
     }
   };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    await handleFormChange();
-    history.push("/success");
+    try {
+      await handleFormChange();
+      history.push("/success");
+    } catch (error) {
+      console.error("Error in form submission:", error);
+    }
   };
 
   return (
