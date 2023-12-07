@@ -47,7 +47,7 @@ h1 {
 .homePageHalfPizza{
 
   transform: rotate(180deg) scale(1.5);
-  margin-top: 40%;
+  margin-top: 65%;
   
 
 }
@@ -75,7 +75,6 @@ h1 {
   display: flex;
   flex-direction: column;
   align-content: center;
-  justify-content: center;
   align-items: center;
   min-height: 100vh;
   background-color: #CE2829;
@@ -208,8 +207,52 @@ border-radius: 5px;
   
   display: flex;
   flex-direction: column;
-  align-content: flex-start;
   width: 40%;
+  grid-gap: 10px;
   gap: 10px;
+  align-items: stretch;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+.price-to-right{
+  
+    display: flex;
+    justify-content: space-between;
+    margin-right: 25px
+  ;
+
+}
+
+.button-orderpage{
+  border-radius: 5px;
+  padding: 10px 45px 10px 45px;
+  background: #FDC913;
+  font-weight: bold;
+  border: none;
+  text-align: center;
+  width: 74%;
+}
+
+.quantity-button{
+
+  background-color: #FDC913;
+  border:none;
+  font-size: 150%;
+  border-radius: 5px;
+
+}
+
+.margin-top-success{
+
+margin-top:250px;
+
+}
+
+.tebrikler {
+    color: white;
+    font-size: 50px;
+    display: flex;
+    justify-content: space-around;
 
 }

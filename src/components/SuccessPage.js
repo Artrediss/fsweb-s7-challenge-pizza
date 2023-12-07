@@ -7,9 +7,9 @@ export default function SuccessPage(){
      < div>
         <h1>Teknolojik Yemekler</h1>
       </div>
-      <div>
-        <h2 style ={{color: "white", fontSize: "50px"}}>Tebrikler Siparişiniz Alındı</h2>
-
+      <div class="margin-top-success">
+        <h2 class="tebrikler">TEBRİKLER!</h2>
+        <p style ={{color: "white", fontSize: "50px"}}> SİPARİŞİNİZ ALINDI</p>
       </div>
     </div>
 
